@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a661dfdbeda9e984ea20c41c0f5a680d, type: 3}
+  m_Name: Junction A
+  m_EditorClassIdentifier: 
+  junctionName: Intersection A
+  strategyType: 0
+  greenTime: 5
+  yellowTime: 1
+  redTime: 5
