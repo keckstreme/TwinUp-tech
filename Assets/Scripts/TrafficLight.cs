@@ -15,18 +15,17 @@ public class TrafficLight : MonoBehaviour
 
     public JunctionGroup junctionGroup;
 
-    [HideInInspector] public bool initializationComplete = false;
     public bool BelongsToJunctionGroup => junctionGroup != null;
 
     [Header("Strategy is overriden if part of a junction")]
     public StrategyType strategyType = StrategyType.Normal;
     public ITrafficStrategy Strategy;
 
+    public TrafficLightColor CurrentColor { get; private set; } = TrafficLightColor.Red;
+    public float CurrentStateTime { get; private set; } = 0f;
 
     void Start()
     {
-        initializationComplete = false;
-
         junctionGroup = GetComponentInParent<JunctionGroup>();
         if (junctionGroup == null)
         {
@@ -50,8 +49,6 @@ public class TrafficLight : MonoBehaviour
                 Strategy = new NormalStrategy();
                 break;
         }
-
-        initializationComplete = true;
     }
 
     void Update()
@@ -77,5 +74,11 @@ public class TrafficLight : MonoBehaviour
         {
             head.SetLightColor(color);
         }
+        CurrentColor = color;
+    }
+
+    public void SetStateTimer(float time)
+    {
+        CurrentStateTime = time;
     }
 }

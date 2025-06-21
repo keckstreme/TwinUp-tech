@@ -22,6 +22,7 @@ public class GreenState : ITrafficLightState
     {
         timer = light.GreenDuration;
         light.SetLightColor(TrafficLightColor.Green);
+        light.SetStateTimer(timer);
     }
 
     public void Update(TrafficLight light)
@@ -31,6 +32,8 @@ public class GreenState : ITrafficLightState
         {
             light.ChangeState(new YellowState());
         }
+        light.SetStateTimer(timer);
+        //Debug.Log($"Green State Timer: {timer}");
     }
 
     public void Exit(TrafficLight light) { }
@@ -44,6 +47,7 @@ public class YellowState : ITrafficLightState
     {
         timer = light.YellowDuration;
         light.SetLightColor(TrafficLightColor.Yellow);
+        light.SetStateTimer(timer);
     }
 
     public void Update(TrafficLight light)
@@ -53,6 +57,8 @@ public class YellowState : ITrafficLightState
         {
             light.ChangeState(new RedState());
         }
+        light.SetStateTimer(timer);
+        //Debug.Log($"Yellow State Timer: {timer}");
     }
 
     public void Exit(TrafficLight light) { }
@@ -66,6 +72,7 @@ public class RedState : ITrafficLightState
     {
         timer = light.RedDuration;
         light.SetLightColor(TrafficLightColor.Red);
+        light.SetStateTimer(timer);
     }
 
     public void Update(TrafficLight light)
@@ -75,6 +82,8 @@ public class RedState : ITrafficLightState
         {
             light.ChangeState(new GreenState());
         }
+        light.SetStateTimer(timer);
+        //Debug.Log($"Red State Timer: {timer}");
     }
 
     public void Exit(TrafficLight light) { }

@@ -20,14 +20,24 @@ public class TrafficLightManager : MonoBehaviour
         Application.targetFrameRate = 60;
         FindAllJunctions();
         FindAllLights();
-        TryStartAllJunctions();
     }
 
-    private List<JunctionGroup> junctions = new List<JunctionGroup>();
+    public List<JunctionGroup> junctions = new List<JunctionGroup>();
     private void FindAllJunctions()
     {
         junctions.Clear();
         junctions.AddRange(FindObjectsByType<JunctionGroup>(FindObjectsSortMode.None));
+    }
+
+    public void ForceAllRed()
+    {
+        foreach (var junction in junctions)
+        {
+            foreach (var light in junction.lights)
+            {
+                light.ChangeState(new RedState());
+            }
+        }
     }
 
     private List<TrafficLight> trafficLights = new List<TrafficLight>();
@@ -37,47 +47,11 @@ public class TrafficLightManager : MonoBehaviour
         trafficLights.AddRange(FindObjectsByType<TrafficLight>(FindObjectsSortMode.None));
     }
 
-    public void TryStartAllJunctions()
-    {
-        IEnumerator waitForAllLightsInitialize()
-        {
-            while (!AllLightsInitialized())
-            {
-                yield return null;
-                print("Waiting for lights to initialize...");
-            }
-            StartAllJunctions();
-        }
-        StartCoroutine(waitForAllLightsInitialize());
-    }
-
-    public void StartAllJunctions()
-    {
-        foreach (var junction in junctions)
-        {
-            //junction.StartSynchronization();
-        }
-    }
-
-    public bool AllLightsInitialized()
-    {
-        foreach (var item in trafficLights)
-        {
-            if (!item.initializationComplete) return false;
-        }
-        return true;
-    }
-
     public void StartAllLights()
     {
     }
 
     public void StopAllLights()
     {
-    }
-
-    public TrafficLight GetTrafficLightById(int id)
-    {
-        return null;
     }
 }

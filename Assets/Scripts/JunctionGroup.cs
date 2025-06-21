@@ -70,6 +70,8 @@ public class JunctionGroup : MonoBehaviour
                 timer = strategy.GetGreenTime(config);
                 break;
         }
+
+        lights[currentIndex].SetStateTimer(timer);
     }
 
     void ResetAllLights()

@@ -2,21 +2,80 @@ using UnityEngine;
 
 public class TrafficIMGUI : MonoBehaviour
 {
-    public Rect windowRect = new Rect(20, 20, 120, 50);
+    private Vector2 scrollPos;
+    private bool simulationRunning = true;
+    private static GUIStyle whiteLabelStyle;
 
     void OnGUI()
     {
-        // Register the window. Notice the 3rd parameter
-        windowRect = GUI.Window(0, windowRect, DoMyWindow, "My Window");
+        if (whiteLabelStyle == null)
+        {
+            whiteLabelStyle = new GUIStyle(GUI.skin.label);
+            whiteLabelStyle.richText = true;
+            whiteLabelStyle.normal.textColor = Color.white;
+        }
+
+        GUI.Box(new Rect(10, 10, 450, Screen.height - 20), "Traffic Lights Dashboard");
+
+        GUILayout.BeginArea(new Rect(20, 40, 430, Screen.height - 60));
+        scrollPos = GUILayout.BeginScrollView(scrollPos);
+
+        // Baþlat / Durdur
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button(simulationRunning ? "Stop Simulation" : "Start Simulation"))
+        {
+            simulationRunning = !simulationRunning;
+            if (simulationRunning) TrafficLightManager.Instance.StartAllLights();
+            else TrafficLightManager.Instance.StopAllLights();
+        }
+
+        if (GUILayout.Button("Emergency (All Red)"))
+        {
+            TrafficLightManager.Instance.ForceAllRed();
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.Space(10);
+
+        foreach (var junction in TrafficLightManager.Instance.junctions)
+        {
+            GUILayout.Label($"<b>{junction.config.junctionName}</b>", whiteLabelStyle);
+
+            foreach (var light in junction.lights)
+            {
+                GUILayout.BeginVertical("box");
+                DrawLightBox(light);
+                GUILayout.EndVertical();
+            }
+
+            GUILayout.Space(10);
+        }
+
+        GUILayout.EndScrollView();
+        GUILayout.EndArea();
     }
 
-    // Make the contents of the window
-    void DoMyWindow(int windowID)
+    void DrawLightBox(TrafficLight light)
     {
-        GUI.DragWindow(new Rect(0, 0, 10000, 20)); // Make the window draggable
-        if (GUI.Button(new Rect(10, 20, 100, 20), "Hello World"))
+        Color prev = GUI.color;
+
+        Color boxColor = light.CurrentColor switch
         {
-            print("Got a click");
+            TrafficLightColor.Green => Color.green,
+            TrafficLightColor.Yellow => Color.yellow,
+            _ => Color.red
+        };
+
+        GUI.color = boxColor;
+        GUILayout.Box(light.CurrentColor.ToString(), GUILayout.Height(20));
+        GUI.color = prev;
+
+        GUILayout.Label($"Remaining: {light.CurrentStateTime:F1}s");
+        GUILayout.Label($"Strategy: {light.strategyType}");
+
+        if (GUILayout.Button("Request pedestrian pass"))
+        {
+            //light.RequestPedestrianCrossing();
         }
     }
 }
