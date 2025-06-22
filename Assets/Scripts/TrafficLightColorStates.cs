@@ -27,13 +27,13 @@ public class GreenState : ITrafficLightState
 
     public void Update(TrafficLight light)
     {
+        if (!TrafficLightManager.Instance.simulationRunning) return;
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
             light.ChangeState(new YellowState());
         }
         light.SetStateTimer(timer);
-        //Debug.Log($"Green State Timer: {timer}");
     }
 
     public void Exit(TrafficLight light) { }
@@ -52,13 +52,13 @@ public class YellowState : ITrafficLightState
 
     public void Update(TrafficLight light)
     {
+        if (!TrafficLightManager.Instance.simulationRunning) return;
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
             light.ChangeState(new RedState());
         }
         light.SetStateTimer(timer);
-        //Debug.Log($"Yellow State Timer: {timer}");
     }
 
     public void Exit(TrafficLight light) { }
@@ -77,13 +77,13 @@ public class RedState : ITrafficLightState
 
     public void Update(TrafficLight light)
     {
+        if (!TrafficLightManager.Instance.simulationRunning) return;
         timer -= Time.deltaTime;
         if (timer <= -light.YellowDuration) // Wait for other light to turn red
         {
             light.ChangeState(new GreenState());
         }
         light.SetStateTimer(timer);
-        //Debug.Log($"Red State Timer: {timer}");
     }
 
     public void Exit(TrafficLight light) { }

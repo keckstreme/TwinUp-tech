@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class TrafficLightManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class TrafficLightManager : MonoBehaviour
         Application.targetFrameRate = 60;
         FindAllJunctions();
         FindAllLights();
+        simulationRunning = true;
     }
 
     public List<JunctionGroup> junctions = new List<JunctionGroup>();
@@ -33,10 +35,12 @@ public class TrafficLightManager : MonoBehaviour
     {
         foreach (var junction in junctions)
         {
-            foreach (var light in junction.lights)
-            {
-                light.ChangeState(new RedState());
-            }
+            junction.EmergencyRed();
+        }
+
+        foreach (var light in GetAllIndividualTrafficLights())
+        {
+            light.ChangeState(new RedState());
         }
     }
 
@@ -47,11 +51,20 @@ public class TrafficLightManager : MonoBehaviour
         trafficLights.AddRange(FindObjectsByType<TrafficLight>(FindObjectsSortMode.None));
     }
 
+    public List<TrafficLight> GetAllIndividualTrafficLights()
+    {
+        // Can be optimized
+        return trafficLights.Where(x => !x.BelongsToJunctionGroup).ToList();
+    }
+
+    public bool simulationRunning = true;
     public void StartAllLights()
     {
+        simulationRunning = true;
     }
 
     public void StopAllLights()
     {
+        simulationRunning = false;
     }
 }

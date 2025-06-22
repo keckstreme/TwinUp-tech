@@ -26,6 +26,12 @@ public class JunctionGroup : MonoBehaviour
         }
     }
 
+    public void EmergencyRed()
+    {
+        lights[currentIndex].ChangeState(new RedState());
+        timer = 5f; // Emergency red light duration
+    }
+
     private ITrafficStrategy CreateStrategy(StrategyType type)
     {
         return type switch
@@ -38,6 +44,7 @@ public class JunctionGroup : MonoBehaviour
     void Update()
     {
         if (lights.Count == 0) return;
+        if (!TrafficLightManager.Instance.simulationRunning) return;
 
         timer -= Time.deltaTime;
 
@@ -65,8 +72,7 @@ public class JunctionGroup : MonoBehaviour
                 currentIndex = (currentIndex + 1) % lights.Count;
                 lights[currentIndex].ChangeState(new GreenState());
                 currentPhase = Phase.Green;
-                //timer = greenTime;
-                //timer = lights[currentIndex].Strategy.GetGreenTime(lights[currentIndex]);
+                //timer = lights[currentIndex].Strategy.GetGreenTime(lights[currentIndex]); // This is strategy of individual light. Not used here.
                 timer = strategy.GetGreenTime(config);
                 break;
         }

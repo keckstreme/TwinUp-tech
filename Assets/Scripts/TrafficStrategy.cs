@@ -45,7 +45,7 @@ public class AdaptiveStrategy : ITrafficStrategy
         int simulatedCarCount = Random.Range(0, 10);
         float multiplier = simulatedCarCount / 10f;
         float adaptiveTime = baseTime + (maxExtraTime * multiplier);
-        Debug.Log($"{light.name} Araç sayýsý: {simulatedCarCount} - {adaptiveTime:F1}s");
+        Debug.Log($"{light.name} | Vehicle count: {simulatedCarCount} - {adaptiveTime:F1}s");
         return adaptiveTime;
     }
 
@@ -54,7 +54,7 @@ public class AdaptiveStrategy : ITrafficStrategy
         int simulatedCarCount = Random.Range(0, 10);
         float multiplier = simulatedCarCount / 10f;
         float adaptiveTime = config.greenTime + ((config.greenTime * 0.5f) * multiplier);
-        Debug.Log($"{config.junctionName} | Araç sayýsý: {simulatedCarCount} - {adaptiveTime:F1}s");
+        Debug.Log($"{config.junctionName} | Vehicle count: {simulatedCarCount} - {adaptiveTime:F1}s");
         return adaptiveTime;
     }
 
