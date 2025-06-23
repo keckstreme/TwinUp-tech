@@ -1,4 +1,9 @@
 # Akıllı Trafik Işıkları Teknik Görev
+## Nasıl Test Edilir?
+### Bireysel Işık Test Etme
+Sadece sahneye bir `Traffic Light` prefab'ı sürüklemeniz yeterlidir.
+### Kavşak Test Etme
+Boş bir `GameObject` oluşturup `JunctionGroup` component'i ekleyin. İstediğiniz sayıda ışığı bu objeye child olarak ekleyin. Devamında `JunctionGroup`'un `Lights` listesine kavşağa dahil olan bütün ışıkları ekleyin. Config `ScriptableObject` dosyası atamayı unutmayın! Atanmadığı durumda kavşak default config'i kullanır.
 ## Nasıl Çalışır?	
 Trafik ışıkları iki şekilde çalışabilir: Bireysel (tek başına duran) ve kavşak üyesi (birden fazla ışığın bir arada olduğu, JunctionGroup sınıfı tarafından yönetilen bir kavşağın parçasıdır.
 ### ITrafficLightState Arayüzü

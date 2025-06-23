@@ -17,6 +17,11 @@ public class JunctionGroup : MonoBehaviour
     {
         currentIndex = 0;
         ResetAllLights();
+        if (config == null)
+        {
+            config = JunctionConfigSO.CreateDefaultConfig();
+        }
+
         strategy = CreateStrategy(config.strategyType);
         if (lights.Count > 0)
         {
